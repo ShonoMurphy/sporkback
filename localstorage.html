@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+
+    function functionOne() {
+        var input = document.querySelector('input').value;
+        localStorage.setItem('myCat', input);
+    }
+
+    function functionTwo() {
+        var catName = localStorage.getItem('myCat');
+        document.querySelector('#show').innerHTML = catName;
+    }
+
+
+</script>
+<body>
+    <input id="input">
+    <button onclick="functionOne()">Store input as myCat</button>
+    <button onclick="functionTwo()">Retrieve value from myCat</button>
+    <div id="show"></div>
+</body>
+</html>

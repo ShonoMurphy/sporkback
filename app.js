@@ -1,16 +1,20 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-require('dotenv/config');
 
-app.use(bodyParser.json());
+dotenv.config();
 
 // Import Routes
 const postsRoute = require('./routes/posts');
+const authRoute = require('./routes/auth');
 
 // Middleware
+app.use(express.json());
+
+// Route Middleware
 app.use('/posts', postsRoute);
+app.use('/api/user', authRoute);
 
 // Routes
 app.get('/', (req,res) => {
@@ -26,4 +30,4 @@ mongoose.connect(
 );
 
 // Listen
-app.listen(3000);
+app.listen(3000, () => console.log('Server listening on port 3000'));

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .clickable {
+            background-color: rgb(22, 117, 62);
+            height: 100px;
+            width: 100px;
+            margin-right: 5px;
+            margin-top: 8px;
+            border-radius: 3px;
+        }
+
+        .clickable:hover {
+            background-color: rgb(66, 182, 95);
+        }
+
+        .clickable:active {
+            background-color: rgb(16, 88, 46);
+        }
+
+        #countdown-bar {
+            width: 475px;
+            margin-right: 10px;
+            color: #0075ff;
+            margin-top: 2px;
+        }
+
+        #countdown-value {
+			-moz-user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .progress-container {
+            display: flex;
+        }
+        
+
+        .flex-container {
+            display: flex;
+        }
+
+        #resetbtn {
+            padding-top: 8px;
+            background-color: #0075ff;
+            width: 520px;
+            height: 35px;
+            text-align: center;
+            margin-top: 10px;
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+            border-radius: 3px;
+			-moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #resetbtn:hover {
+            background-color: #50a1fd;
+        }
+
+        #resetbtn:active {
+            background-color: #035cc2;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <progress id="countdown-bar" value="60" max="60"></progress></progress>
+        <div id="countdown-value">1:00</div>
+    </div>
+    <div class="flex-container">
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+    </div>
+    <div class="flex-container">
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+        <div class="clickable">
+        </div>
+    </div>
+    <div id="resetbtn" onclick="resetGame()"><label>Reset</label></div>
+
+</body>
+<script>
+    // Tijd voor counter. Maximaal 60 seconden
+    var timeLeft = 60;
+    // Boolean die aangeeft of het potje begonnen is
+    var gameRunning = false;
+
+    // Functie die omlaag telt. Verpakt in een variabele zodat deze gestopt kan worden
+    var countTime = setInterval(() => {
+            // Voer verder niks uit als de teller op 0 staat
+            if (timeLeft == 0) return;
+            // Check of het potje loopt en begin dan af te tellen en update de waarde van de timer/progressbar
+            if (gameRunning) {
+                timeLeft--;
+                document.querySelector('#countdown-bar').value = timeLeft;
+                if (timeLeft < 10) {
+                    document.querySelector('#countdown-value').innerHTML = '0:0' + timeLeft;
+                } else {
+                    document.querySelector('#countdown-value').innerHTML = '0:' + timeLeft;
+                }
+            }
+        }, 1000);
+    
+    // Maakt alle tegels klikbaar om de timer te starten 
+    const buttons = document.querySelectorAll('.clickable');
+    for (const button of buttons) {
+        button.addEventListener('click', () => {
+            // Na eerste klik niks uitvoeren als gameRunning naar true is gezet
+            if (gameRunning) return;
+            // Zet gameRunning naar true
+            gameRunning = true;
+            countTime;
+            console.log('Clicked');
+        });
+    };
+
+    // Reset knop
+    function resetGame() {
+        timeLeft = 60;
+        gameRunning = false;
+        clearInterval(countTime);
+        countTime = setInterval(() => {
+            if (timeLeft == 0) return;
+            if (gameRunning) {
+                timeLeft--;
+                document.querySelector('#countdown-bar').value = timeLeft;
+                if (timeLeft < 10) {
+                    document.querySelector('#countdown-value').innerHTML = '0:0' + timeLeft;
+                } else {
+                    document.querySelector('#countdown-value').innerHTML = '0:' + timeLeft;
+                }
+            }
+        }, 1000);
+        document.querySelector('#countdown-value').innerHTML = '1:00';
+        document.querySelector('#countdown-bar').value = timeLeft;
+    }
+</script>
+</html>
