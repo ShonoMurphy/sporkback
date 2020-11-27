@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -10,10 +11,11 @@ const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
 
 // Middleware
+app.use(cors())
 app.use(express.json());
 
 // Route Middleware
-app.use('/posts', postsRoute);
+app.use('/api/posts', postsRoute);
 app.use('/api/user', authRoute);
 
 // Routes

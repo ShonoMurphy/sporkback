@@ -3,11 +3,6 @@ const Joi = require('@hapi/joi');
 // Register Validation
 const registerValidation = (data) => {
     const schema = Joi.object({
-        username: Joi.string()
-            .alphanum()
-            .min(3)
-            .max(30)
-            .required(),
         email: Joi.string()
             .min(6)
             .required()
@@ -20,7 +15,6 @@ const registerValidation = (data) => {
             .messages({
                 'string.pattern.base': 'Password must be between 8 and 30 character, must contain at least one uppercase letter, must contain at least one lowercase letter, must contain at least one number digit and must contain at least one special character'
             })
-
     });
     return schema.validate(data);
 };

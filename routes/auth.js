@@ -1,8 +1,24 @@
 const router = require ('express').Router();
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validation');
+const verify = require('./verifyToken');
 
+
+router.get('/', verify, async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch(err) {
+        res.status(400).send(err);
+    }
+});
+
+router.get('/refresh', verify, async (req, res) => {
+    const token = jwt.sign({_id: req.user._id}, process.env.TOKEN_SECRET, { expiresIn: '48h' });
+    res.header('auth-token', token).send(token);
+});
 
 router.post('/register', async (req, res) => { 
     // Validate data before registering
@@ -21,7 +37,6 @@ router.post('/register', async (req, res) => {
 
     // Create a new user
     const user = new User({
-        username: req.body.username,
         email: req.body.email,
         password: hashedPassword
     });
@@ -45,7 +60,9 @@ router.post('/login', async (req, res) => {
     if (!validPass) return res.status(400).send('Wrong password');
     // Response on success
     try {
-        res.send('Logged in!');
+        // Create and assign a token
+        const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, { expiresIn: '48h' });
+        res.header('auth-token', token).send(token);
     } catch(err) {
         res.status(400).send(err);
 }
